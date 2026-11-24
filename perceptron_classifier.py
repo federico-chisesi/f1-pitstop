@@ -1,8 +1,3 @@
-"""
-Perceptron semplice, come nel repository del prof (github.com/alessandrobruno10/perceptron).
-Lo usiamo come BASELINE: il modello da battere.
-"""
-
 import numpy as np
 
 
