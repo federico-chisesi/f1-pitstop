@@ -1,6 +1,5 @@
 """
 Chiede al modello se un pilota rientrera' ai box al giro successivo.
-Stessa idea di classify_spam.py del prof.
 
 Esempio:
     python predict.py --driver HAM --lap 26

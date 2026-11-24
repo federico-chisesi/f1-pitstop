@@ -42,7 +42,7 @@ print(f"Linearmente separabili: {'SI' if result.status == 0 else 'NO'}\n")
 # 4. Quanto si avvicina una retta, rispetto all'MLP? (tutti i dati, senza test)
 pos_weight = (y == 0).sum() / (y == 1).sum()
 models = {
-    "Perceptron del prof": PerceptronClassifier(),
+    "Perceptron semplice": PerceptronClassifier(),
     "Migliore retta (SVM lineare)": LinearSVC(class_weight="balanced", max_iter=200000),
     "MLP (8 neuroni)": MLPClassifier(pos_weight=pos_weight),
 }

@@ -3,7 +3,7 @@ Multilayer Perceptron con UN strato nascosto, scritto da zero con NumPy.
 
     ingresso (8 feature) -> strato nascosto (ReLU) -> uscita (sigmoide = probabilita' di pit)
 
-Differenze rispetto al perceptron del prof:
+Differenze rispetto al perceptron semplice:
   - c'e' uno strato nascosto con funzione di attivazione ReLU
   - l'uscita e' una probabilita' (sigmoide) invece di un si'/no secco
   - i pesi si correggono con la backpropagation, usando la cross-entropy come errore

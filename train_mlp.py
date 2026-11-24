@@ -53,7 +53,7 @@ def main():
     scaler = StandardScaler().fit(X_train)
     X_train, X_test = scaler.transform(X_train), scaler.transform(X_test)
 
-    # 4. Baseline: il perceptron del prof
+    # 4. Baseline: il perceptron semplice
     perceptron = PerceptronClassifier(random_state=args.random_state).fit(X_train, y_train)
     evaluate("Perceptron (baseline)", y_test, perceptron.predict(X_test))
 

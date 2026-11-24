@@ -357,24 +357,77 @@ Questa sezione spiega cosa fa ogni parte del codice. I numeri di riga sono quell
 
 | Righe | Cosa fa                                                                                                                                                               |
 |-------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| 1–4   | La descrizione del file. |
-| 6–16  | Carica le librerie e i nostri file: l'elenco delle colonne e i due modelli. |
-| 18–19 | **I 6 piloti di test**, scritti a mano: Hamilton, Antonelli, Leclerc, Verstappen, Norris e Russell. |
-| 22    | La funzione `evaluate`, che stampa i risultati di un modello. |
-| 23–25 | Calcola precision, recall e F1 considerando **pit e no pit insieme**, con la media macro (vedi *Risultati*). |
-| 26–30 | Stampa accuracy, precision, recall e F1. |
-| 31–32 | Stampa la confusion matrix. |
-| 35–41 | Legge le impostazioni scritte nel terminale (es. `--epochs 2000`); se non si scrive niente usa i valori di default. |
-| 44–46 | Carica il dataset: `X` sono le 8 informazioni, `y` le risposte giuste. |
-| 49–50 | **Divide per pilota**: i giri dei 6 piloti di test da una parte, quelli degli altri 16 dall'altra. Tutti i giri di uno stesso pilota stanno dalla stessa parte. |
-| 51    | Stampa i piloti del test. |
-| 54–55 | **Standardizza**: mette tutte le informazioni sulla stessa scala, usando le medie dei soli piloti di allenamento. |
-| 58–59 | Addestra il perceptron e lo valuta sui piloti di test. |
-| 62    | Calcola quanto deve pesare un pit stop: giri normali diviso pit stop: 763 / 34, circa 22. |
-| 63–66 | Crea e addestra l'MLP. |
-| 67    | Valuta l'MLP sui piloti di test. |
-| 70–72 | Salva il modello e lo scaler: servono a `predict.py`. |
-| 75–80 | Disegna e salva il grafico della loss (`loss_curve.png`). |
+| 1–4   | La descrizione del file.                                                                                                                                              |
+| 6     | Carica `numpy`, la libreria dei calcoli.                                                                                                                              |
+| 9     | Definisce il modello `PerceptronClassifier`.                                                                                                                          |
+| 11–14 | Le impostazioni: quanto grandi sono le correzioni (`learning_rate`), quante volte ripassare i dati (`max_iterations`), il seed.                                       |
+| 16    | Inizia l'addestramento: `X` sono le informazioni dei giri, `y` le risposte giuste.                                                                                    |
+| 17–19 | Un peso casuale e piccolo per ognuna delle 8 informazioni, e un bias (una "spinta" fissa) che parte da zero.                                                          |
+| 20    | Il perceptron ragiona con +1 e −1: trasforma gli 0 in −1.                                                                                                             |
+| 22    | Ripete tutto 100 volte.                                                                                                                                               |
+| 23    | Prende un giro alla volta.                                                                                                                                            |
+| 24    | **Il cuore del perceptron**: moltiplica ogni informazione per il suo peso, somma tutto, aggiunge il bias. Se il risultato è positivo dice "pit", altrimenti "no pit". |
+| 25–27 | Solo se ha sbagliato, sposta i pesi verso la risposta giusta.                                                                                                         |
+| 28    | Restituisce il modello addestrato.                                                                                                                                    |
+| 30–31 | La previsione: la stessa somma pesata, per tutti i giri insieme.                                                                                                      |
+
+### mlp_classifier.py – la rete neurale
+
+È il file più importante del progetto.
+
+| Righe | Cosa fa                                                                                                                                                               |
+|-------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| 1–10  | La descrizione: ingresso, strato nascosto con ReLU, uscita con sigmoide, e le differenze rispetto al perceptron.                                                      |
+| 12–14 | Carica `pickle` (per salvare il modello in un file) e `numpy`.                                                                                                        |
+| 17    | Definisce il modello `MLPClassifier`.                                                                                                                                 |
+| 19–25 | Le impostazioni: 8 neuroni nascosti, passo di correzione 0,1, 1.000 epoche, peso dei pit stop, seed. `loss_history` è una lista dove si annota l'errore a ogni epoca. |
+| 27    | Inizia il **passo in avanti**: dai dati alla probabilità.                                                                                                             |
+| 29    | Ognuno degli 8 neuroni nascosti fa una somma pesata delle 8 informazioni, più il suo bias. È lo stesso calcolo del perceptron, ripetuto 8 volte.                      |
+| 30    | La **ReLU**: tiene i valori positivi e azzera quelli negativi. Senza questa riga la rete sarebbe equivalente a un perceptron.                                         |
+| 31    | Il neurone di uscita fa una somma pesata delle risposte degli 8 neuroni nascosti.                                                                                     |
+| 32    | La **sigmoide**: trasforma il risultato in una probabilità tra 0 e 1.                                                                                                 |
+| 34–37 | Inizia l'**addestramento**: legge quanti giri e quante informazioni ci sono e prepara le risposte giuste.                                                             |
+| 40–43 | Crea gli 81 numeri della rete: pesi casuali e piccoli, bias a zero. Devono essere casuali, altrimenti gli 8 neuroni imparerebbero tutti la stessa cosa.               |
+| 46    | Dà a ogni giro un peso: circa 25 se è un pit stop, 1 se è un giro normale.                                                                                            |
+| 48    | Tutto quello che segue si ripete 1.000 volte (le epoche).                                                                                                             |
+| 50    | La rete calcola la probabilità di pit per tutti i giri, con i pesi attuali.                                                                                           |
+| 53    | Una sicurezza tecnica: evita il logaritmo di zero, che bloccherebbe il calcolo.                                                                                       |
+| 54    | **La loss**: il voto che misura quanto la rete ha sbagliato. Se a un pilota che si è fermato dava il 90% l'errore è piccolo, se dava l'1% è enorme.                   |
+| 55    | Annota il voto, per disegnare il grafico.                                                                                                                             |
+| 58    | Inizia la **backpropagation**: l'errore in uscita è semplicemente "previsione meno realtà".                                                                           |
+| 59–60 | Calcola quanto hanno sbagliato i pesi e il bias dell'uscita.                                                                                                          |
+| 61    | Riporta l'errore indietro allo strato nascosto: ogni neurone riceve la sua parte di colpa.                                                                            |
+| 62    | I neuroni che erano spenti (azzerati dalla ReLU) non hanno colpa.                                                                                                     |
+| 63–64 | Calcola quanto hanno sbagliato i pesi e i bias dello strato nascosto.                                                                                                 |
+| 67–70 | **La discesa del gradiente**: ogni peso si sposta un po' nella direzione che riduce l'errore.                                                                         |
+| 72–73 | Ogni 200 epoche stampa la loss: se scende, la rete sta imparando.                                                                                                     |
+| 76–77 | `predict_proba`: restituisce le probabilità.                                                                                                                          |
+| 79–80 | `predict`: risponde "pit" se la probabilità è almeno 0,5.                                                                                                             |
+| 82–83 | `score`: la percentuale di risposte giuste.                                                                                                                           |
+| 85–92 | `save` e `load`: salvano il modello in un file e lo ricaricano.                                                                                                       |
+
+### train_mlp.py – addestrare e valutare
+
+| Righe | Cosa fa                                                                                                                    |
+|-------|----------------------------------------------------------------------------------------------------------------------------|
+| 1–3   | La descrizione del file. |
+| 5–15  | Carica le librerie e i nostri file: l'elenco delle colonne e i due modelli. |
+| 17–18 | **I 6 piloti di test**, scritti a mano: Hamilton, Antonelli, Leclerc, Verstappen, Norris e Russell. |
+| 21    | La funzione `evaluate`, che stampa i risultati di un modello. |
+| 22–24 | Calcola precision, recall e F1 considerando **pit e no pit insieme**, con la media macro (vedi *Risultati*). |
+| 25–29 | Stampa accuracy, precision, recall e F1. |
+| 30–31 | Stampa la confusion matrix. |
+| 34–40 | Legge le impostazioni scritte nel terminale (es. `--epochs 2000`); se non si scrive niente usa i valori di default. |
+| 43–45 | Carica il dataset: `X` sono le 8 informazioni, `y` le risposte giuste. |
+| 48–49 | **Divide per pilota**: i giri dei 6 piloti di test da una parte, quelli degli altri 16 dall'altra. Tutti i giri di uno stesso pilota stanno dalla stessa parte. |
+| 50    | Stampa i piloti del test. |
+| 53–54 | **Standardizza**: mette tutte le informazioni sulla stessa scala, usando le medie dei soli piloti di allenamento. |
+| 57–58 | Addestra il perceptron e lo valuta sui piloti di test. |
+| 61    | Calcola quanto deve pesare un pit stop: giri normali diviso pit stop: 763 / 34, circa 22. |
+| 62–65 | Crea e addestra l'MLP. |
+| 66    | Valuta l'MLP sui piloti di test. |
+| 69–71 | Salva il modello e lo scaler: servono a `predict.py`. |
+| 74–79 | Disegna e salva il grafico della loss (`loss_curve.png`). |
 
 ### check_separability.py – i dati si dividono con una retta?
 
@@ -393,14 +446,14 @@ Questa sezione spiega cosa fa ogni parte del codice. I numeri di riga sono quell
 
 | Righe | Cosa fa                                                                                                                        |
 |-------|--------------------------------------------------------------------------------------------------------------------------------|
-| 1–7   | La descrizione del file, con un esempio d'uso.                                                                                 |
-| 9–15  | Carica le librerie, l'elenco delle colonne e il modello.                                                                       |
-| 17–20 | Legge dal terminale la sigla del pilota e il giro.                                                                             |
-| 23–26 | Carica il modello addestrato, lo scaler e il dataset.                                                                          |
-| 29    | Cerca la riga di quel pilota a quel giro.                                                                                      |
-| 30–31 | Se non la trova (giro di rientro, ultimo giro o pilota ritirato), si ferma con un messaggio.                                   |
-| 34    | **La previsione**: prende le 8 informazioni del giro, le mette sulla stessa scala dell'allenamento e le fa passare nella rete. |
-| 35–39 | Stampa la situazione, la probabilità, la decisione e cosa è successo davvero.                                                  |
+| 1–6   | La descrizione del file, con un esempio d'uso.                                                                                 |
+| 8–14  | Carica le librerie, l'elenco delle colonne e il modello.                                                                       |
+| 16–19 | Legge dal terminale la sigla del pilota e il giro.                                                                             |
+| 22–25 | Carica il modello addestrato, lo scaler e il dataset.                                                                          |
+| 28    | Cerca la riga di quel pilota a quel giro.                                                                                      |
+| 29–30 | Se non la trova (giro di rientro, ultimo giro o pilota ritirato), si ferma con un messaggio.                                   |
+| 33    | **La previsione**: prende le 8 informazioni del giro, le mette sulla stessa scala dell'allenamento e le fa passare nella rete. |
+| 34–38 | Stampa la situazione, la probabilità, la decisione e cosa è successo davvero.                                                  |
 
 ## Risultati
 
