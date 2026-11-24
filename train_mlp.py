@@ -1,6 +1,5 @@
 """
 Addestra il perceptron (baseline) e l'MLP, li valuta e salva l'MLP.
-Stessa struttura di train_perceptron.py del prof.
 """
 
 import argparse
