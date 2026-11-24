@@ -9,12 +9,14 @@ import pickle
 import matplotlib.pyplot as plt
 import pandas as pd
 from sklearn.metrics import accuracy_score, confusion_matrix, precision_recall_fscore_support
-from sklearn.model_selection import GroupShuffleSplit
 from sklearn.preprocessing import StandardScaler
 
 from build_dataset import FEATURES, LABEL
 from mlp_classifier import MLPClassifier
 from perceptron_classifier import PerceptronClassifier
+
+# I 6 piloti tenuti da parte per il test: il modello non li vede durante l'addestramento
+TEST_DRIVERS = ["HAM", "ANT", "LEC", "VER", "NOR", "RUS"]
 
 
 def evaluate(name, y_test, y_pred):
@@ -35,7 +37,6 @@ def main():
     parser.add_argument("--hidden_size", type=int, default=8)
     parser.add_argument("--learning_rate", type=float, default=0.1)
     parser.add_argument("--epochs", type=int, default=1000)
-    parser.add_argument("--test_size", type=float, default=0.25)
     parser.add_argument("--random_state", type=int, default=42)
     args = parser.parse_args()
 
@@ -45,10 +46,9 @@ def main():
     print(f"Righe: {len(df)}  |  pit stop: {y.sum()}")
 
     # 2. Dividiamo per PILOTA: i piloti del test non si vedono durante l'addestramento
-    splitter = GroupShuffleSplit(n_splits=1, test_size=args.test_size, random_state=args.random_state)
-    train_idx, test_idx = next(splitter.split(X, y, groups=df["driver"]))
-    X_train, X_test, y_train, y_test = X[train_idx], X[test_idx], y[train_idx], y[test_idx]
-    print(f"Piloti nel test: {', '.join(sorted(df['driver'].iloc[test_idx].unique()))}")
+    is_test = df["driver"].isin(TEST_DRIVERS).values
+    X_train, X_test, y_train, y_test = X[~is_test], X[is_test], y[~is_test], y[is_test]
+    print(f"Piloti nel test: {', '.join(TEST_DRIVERS)}")
 
     # 3. Standardizziamo: media e deviazione standard calcolate SOLO sul training
     scaler = StandardScaler().fit(X_train)
