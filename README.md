@@ -20,7 +20,7 @@ Il problema si presta bene a mostrare come funziona una rete neurale, per quattr
 
 1. **È una domanda con due sole risposte**,al giro successivo il pilota si ferma (sì) oppure no? In machine learning si chiama **classificazione binaria**.
 2. **I dati sono reali e pubblici**, quindi chiunque può scaricarli e rifare il progetto.
-3. **I pit stop sono rari**: la gara ha 66 giri e in pista ci sono 22 piloti. Ogni giro di ogni pilota è un esempio per il modello, quindi in tutto sono più di mille esempi (1.164). Solo in 48 di questi il pilota si ferma ai box al giro successivo, cioè circa 4 su 100. Un modello che risponde sempre "resta in pista" avrebbe ragione il 96% delle volte, ma non prevederebbe mai un pit stop. Per questo bisogna addestrarlo e valutarlo con attenzione.
+3. **I pit stop sono rari**: la gara ha 66 giri e in pista ci sono 22 piloti. Ogni giro di ogni pilota è un esempio per il modello, quindi in tutto sono più di mille esempi, per essere esatti 1164. Solo in 48 di questi il pilota si ferma ai box al giro successivo, cioè circa 4 su 100. Un modello che risponde sempre "resta in pista" avrebbe ragione il 96% delle volte, ma non prevederebbe mai un pit stop. Per questo bisogna addestrarlo e valutarlo con attenzione.
 4. **I dati non si dividono con una semplice "linea retta"**: un modello semplice come il perceptron non basta, e serve una rete con più strati. Il progetto lo dimostra con un test apposito.
 
 ### Cosa fa il progetto, passo per passo
