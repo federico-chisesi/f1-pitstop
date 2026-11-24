@@ -53,7 +53,7 @@ Qui trovi spiegate in modo semplice le parole che compaiono nel resto del docume
 
 ## Legenda dei piloti
 
-Nei dati e nei risultati ogni pilota è indicato con una **sigla di tre lettere**, la stessa che si vede in TV durante le gare. Sono le prime tre lettere del cognome. Questa sigla è stata utilizzata per fare questa previsione, in modo da avere lo stesso tipo li linguaggio e sigle.
+Nei dati e nei risultati ogni pilota è indicato con una **sigla di tre lettere**, la stessa che si vede in TV durante le gare. Sono le prime tre lettere del cognome. Le stesse sigle sono state utilizzate anche in questo progetto, in modo da avere una continuità del linguaggio. 
 
 | Sigla | Pilota | Squadra | Numero |
 |---|---|---|---|
