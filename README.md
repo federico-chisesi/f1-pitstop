@@ -18,9 +18,9 @@ A decidere è il **muretto box**, postazione in cui gli ingegneri della squadra 
 
 Il problema si presta bene a mostrare come funziona una rete neurale, per quattro motivi.
 
-1. **È una domanda con due sole risposte**: al giro successivo il pilota si ferma (sì) oppure no. In machine learning si chiama **classificazione binaria**.
-2. **I dati sono reali e pubblici**: chiunque può scaricarli e rifare il progetto.
-3. **I pit stop sono rari**: su più di mille giri, fatti da ogni pilota, sommati tutti insieme le soste sono solo 48. Questo costringe a scegliere con attenzione come addestrare il modello e come valutarlo, perché un modello che dice sempre "nessuno si ferma" sembrerebbe bravissimo senza servire a niente.
+1. **È una domanda con due sole risposte**,al giro successivo il pilota si ferma (sì) oppure no? In machine learning si chiama **classificazione binaria**.
+2. **I dati sono reali e pubblici**, quindi chiunque può scaricarli e rifare il progetto.
+3. **I pit stop sono rari**: la gara ha 66 giri e in pista ci sono 22 piloti. Ogni giro di ogni pilota è un esempio per il modello, quindi in tutto sono più di mille esempi (1.164). Solo in 48 di questi il pilota si ferma ai box al giro successivo, cioè circa 4 su 100. Un modello che risponde sempre "resta in pista" avrebbe ragione il 96% delle volte, ma non prevederebbe mai un pit stop. Per questo bisogna addestrarlo e valutarlo con attenzione.
 4. **I dati non si dividono con una semplice "linea retta"**: un modello semplice come il perceptron non basta, e serve una rete con più strati. Il progetto lo dimostra con un test apposito.
 
 ### Cosa fa il progetto, passo per passo
