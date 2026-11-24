@@ -25,7 +25,7 @@ Il problema si presta bene a mostrare come funziona una rete neurale, per quattr
 
 ### Cosa fa il progetto, passo per passo
 
-- **Scarica i dati** di una gara dall'archivio gratuito OpenF1 su Github
+- **Scarica i dati**: in questo caso vengono utilizzati dei dati estrapolati dall'archivio gratuito OpenF1 su Github
 - **Prepara il dataset**: trasforma i dati grezzi in una tabella con una riga per ogni pilota alla fine di ogni giro
 - **Addestra un perceptron semplice**, il modello più elementare, usato come termine di paragone
 - **Addestra un Multilayer Perceptron (MLP)**, la nostra rete neurale, scritta da zero
