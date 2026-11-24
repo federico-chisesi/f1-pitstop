@@ -38,18 +38,18 @@ La gara usata è il **Gran Premio di Barcellona-Catalunya del 14 giugno 2026**: 
 
 ## Concetti di base
 
-Questa sezione spiega i termini usati nel resto del documento, per chi non li conosce.
+Qui trovi spiegate in modo semplice le parole che compaiono nel resto del documento.
 
-- **Machine learning**: invece di scrivere a mano le regole ("se la gomma ha più di 20 giri, fermati"), si danno al computer tanti esempi già risolti e lui trova da solo le regole.
-- **Classificazione**: il compito di mettere ogni caso in una categoria. Qui le categorie sono due: *pit* (il pilota si ferma al giro dopo) e *no pit*.
-- **Feature**: le informazioni che il modello usa per decidere, per esempio l'età della gomma o i giri che mancano.
-- **Etichetta**: la risposta giusta di ogni esempio, quella che il modello deve imparare a indovinare.
-- **Neurone artificiale**: un piccolo calcolo che moltiplica ogni informazione per un **peso** (quanto quella informazione conta), somma tutto e decide.
-- **Perceptron**: il modello più semplice, fatto di un solo neurone. Sa dividere i casi solo con una "linea retta".
-- **Multilayer Perceptron (MLP)**: più neuroni organizzati in strati. Lo strato in mezzo, chiamato **strato nascosto**, permette di riconoscere situazioni più complicate di una linea retta.
-- **Addestramento**: la fase in cui il modello guarda gli esempi, sbaglia e corregge i suoi pesi un po' alla volta.
-- **Test**: la fase in cui si mette alla prova il modello su esempi che non ha mai visto, per capire se ha davvero imparato o se ha solo memorizzato.
-- **Linearmente separabili**: due gruppi di dati si dicono così se esiste una sola linea retta (con tante informazioni, un "piano" dritto) che li divide senza errori.
+- **Machine learning**: di solito, per far fare qualcosa a un computer, gli si scrivono le regole una per una, per esempio "se la gomma ha più di 20 giri, fermati". Con il machine learning si fa il contrario: gli si mostrano tanti casi già successi e il computer trova da solo le regole che li spiegano.
+- **Classificazione**: vuol dire mettere ogni caso nella categoria giusta, come quando si separa la posta in "importante" e "da buttare". Nel nostro progetto le categorie sono due: **pit**, quando il pilota si ferma ai box al giro dopo, e **no pit**, quando resta in pista.
+- **Feature**: sono le informazioni che il modello guarda prima di rispondere. È quello che guarderebbe un ingegnere al muretto box: che gomma monta il pilota, da quanti giri la usa, quanti giri mancano alla fine, se in pista c'è la Safety Car.
+- **Etichetta**: è la risposta giusta di ogni caso, quella che sappiamo perché la gara è già finita. Vale **1** se il pilota si è fermato davvero al giro dopo e **0** se non si è fermato. Il modello impara proprio confrontando le sue risposte con le etichette.
+- **Neurone artificiale**: è il mattoncino base di una rete neurale. Funziona come una bilancia: prende ogni informazione e le dà un **peso**, cioè decide quanto conta. Per esempio "gomma molto vecchia" può contare tanto, "gomma dura" poco. Poi somma tutto e tira fuori un numero tra 0 e 1, che indica quanto è probabile il pit stop.
+- **Perceptron**: è il modello più semplice che esista, fatto da un neurone solo. Funziona bene quando la risposta dipende da una regola semplice, ma si blocca quando la situazione è più complicata, per esempio quando la stessa gomma vecchia a volte porta al pit e a volte no, a seconda di quanti giri mancano.
+- **Multilayer Perceptron (MLP)**: è una rete fatta di più neuroni messi in fila su più livelli, chiamati **strati**. Il primo strato riceve le informazioni e l'ultimo dà la risposta. In mezzo c'è lo **strato nascosto**: si chiama così perché non si vede né all'inizio né alla fine, ma è lì che il modello combina le informazioni tra loro, per esempio "gomma vecchia **e** tanti giri ancora da fare". È questo che gli permette di capire situazioni che il perceptron da solo non riesce a gestire.
+- **Addestramento**: è la fase in cui il modello impara. Guarda un caso, prova a rispondere, controlla l'etichetta e, se ha sbagliato, corregge un po' i pesi. Lo ripete migliaia di volte, e ogni volta sbaglia un po' meno.
+- **Test**: è l'esame finale del modello. Gli si danno casi che non ha mai visto durante l'addestramento, nel nostro progetto i giri di piloti che aveva tenuto da parte, e si controlla quante risposte azzecca. Serve a capire se ha imparato davvero o se ha solo memorizzato gli esempi, come uno studente che sa a memoria gli esercizi del libro ma non sa risolverne uno nuovo.
+- **Linearmente separabili**: immagina di disegnare su un foglio tutti i giri della gara, con un punto rosso per ogni giro in cui il pilota si ferma al giro dopo e un punto blu per tutti gli altri. Se riesci a tracciare una sola riga dritta che lascia tutti i rossi da una parte e tutti i blu dall'altra, i dati sono linearmente separabili e basta il perceptron. Nel nostro caso questa riga non esiste, perché i punti rossi e blu sono mescolati. Per questo serve l'MLP.
 
 ## Struttura del progetto
 
