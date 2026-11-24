@@ -25,7 +25,8 @@ Il problema si presta bene a mostrare come funziona una rete neurale, per quattr
 
 ### Cosa fa il progetto, passo per passo
 
-- **Scarica i dati**: in questo caso vengono utilizzati dei dati estrapolati dall'archivio gratuito OpenF1 su Github
+- **Scarica i dati**: in questo caso vengono utilizzati dei dati estrapolati dall'archivio gratuito [OpenF1](https://openf1.org)
+- **Controlla i dati con la fonte ufficiale**: OpenF1 non è un servizio ufficiale, quindi le soste sono state confrontate con il riepilogo dei pit stop pubblicato dalla FIA a fine gara. In entrambi risultano 48 soste, quindi i dati su cui il modello impara sono corretti. I documenti della FIA servono solo per questo controllo e non entrano nel modello
 - **Prepara il dataset**: trasforma i dati grezzi in una tabella con una riga per ogni pilota alla fine di ogni giro
 - **Addestra un perceptron semplice**, il modello più elementare, usato come termine di paragone
 - **Addestra un Multilayer Perceptron (MLP)**, la nostra rete neurale, scritta da zero
@@ -33,7 +34,7 @@ Il problema si presta bene a mostrare come funziona una rete neurale, per quattr
 - **Verifica se i dati sono "linearmente separabili"**, cioè se basterebbe una retta per dividerli
 - **Fa previsioni**: dato un pilota e un giro, dice se rientrerà ai box
 
-La gara usata è il **Gran Premio di Barcellona-Catalunya del 14 giugno 2026**: 66 giri, vinto da Lewis Hamilton con una strategia a tre soste. È una gara con strategie molto diverse tra i piloti, in quella gara c'e stato chi si è fermato una volta, chi due, chi tre, quindi offre al modello esempi vari da cui imparare.
+La gara usata è il **Gran Premio di Barcellona-Catalunya del 14 giugno 2026**: 66 giri, vinto da Lewis Hamilton con una strategia a tre soste. È una gara con strategie molto diverse tra i piloti, in quella gara c'è stato chi si è fermato una volta, chi due, chi tre, quindi offre al modello esempi vari da cui imparare.
 
 ## Concetti di base
 
